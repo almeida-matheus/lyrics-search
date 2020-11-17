@@ -24,8 +24,8 @@ const getMoreSongs = async url => {
 //6 - inserir botões de next e prev
 const insertNextAndPrevButtons = ({ prev, next }) => { //sem prev, next teria q ter songsInfo.xxx
     prevAndNextContainer.innerHTML = `
-    ${prev ? `<button class="btn" onclick="getMoreSongs('${prev}')">Anteriores</button>` : ''}
-    ${next ? `<button class="btn" onclick="getMoreSongs('${next}')">Próximas</button>` : ''}
+    ${prev ? `<button class="btn-prev" onclick="getMoreSongs('${prev}')">&#8249;</button>` : ''}
+    ${next ? `<button class="btn-next" onclick="getMoreSongs('${next}')">&#8250;</button>` : ''}
 `
 }
 
@@ -33,10 +33,13 @@ const insertNextAndPrevButtons = ({ prev, next }) => { //sem prev, next teria q 
 //e insere as informacoes dentro da string, da string pra tela
 // insere lis na tela de acordo com a resposta
 const insertSongsIntoPage = ({ data, prev, next }) => { //permite remover o songsInfo.xxx e song.artist.name e song.title
-    songsContainer.innerHTML = data.map(({ artist: { name }, title }) => `
+    songsContainer.innerHTML = data.map(({ artist: { name }, title, preview }) => `
         <li class="song">
+            <audio controls style="display: none;" class="audio">
+                <source src="${preview}" />
+            </audio>
             <span class="song-artist"><strong>${name}</strong> - ${title}</span>
-            <button class="btn" data-artist="${name}" data-song-title="${title}">Ver letra</button>
+            <button class="btn" data-artist="${name}" data-song-title="${title}">Letra</button>
         </li>
     `).join('')
 
@@ -91,7 +94,7 @@ const handleFormSubmit = event => {
 form.addEventListener('submit', handleFormSubmit)
 
 //10- inserir informações na página de ver letra
-const insertLyricsIntoPage = ({ lyrics, artist, songTitle }) => {
+const insertLyricsIntoPage = ({ lyrics, artist, songTitle}) => {
     songsContainer.innerHTML = `
         <li class="lyrics-container">
             <h2><strong>${songTitle}</strong> - ${artist}</h2>
@@ -104,7 +107,11 @@ const insertLyricsIntoPage = ({ lyrics, artist, songTitle }) => {
 const fetchLyrics = async (artist, songTitle) => {
     const data = await fetchData(`${apiUrl}/v1/${artist}/${songTitle}`)
     const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>')
-    insertLyricsIntoPage({ lyrics, artist, songTitle })
+    // const preview = data.preview
+    // const data = await fetchData(`${apiUrl}/suggest/${term}`)
+    // data.map({ artist: { name }, title, preview })
+    
+    insertLyricsIntoPage({ lyrics, artist, songTitle})
 }
 
 //8 - pegar musica clicada
@@ -114,6 +121,7 @@ const handleSongsContainerClick = event => {
     if (clickedElement.tagName === 'BUTTON') {
         const artist = clickedElement.getAttribute('data-artist') //artist; "led zeppelin"
         const songTitle = clickedElement.getAttribute('data-song-title')
+        // const preview = clickedElement.getAttribute('audio')
 
         // remover botão prev e next quando a letra da música for clicada
         prevAndNextContainer.innerHTML = ''

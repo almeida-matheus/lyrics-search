@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <meta charset="UTF-8">
   <title>Lyrics Search</title>
   <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
   <header>
-    <h1>Busca letras</h1>
 
-    <form id="form">
-      <input
-        id="search"
-        type="text"
-        placeholder="Insira o nome do artista ou da música..."
-      />
+    <h1>Buscador de músicas</h1>
 
+    <!-- <form id="form">
+      <input id="search" type="text" placeholder="Insira o nome do artista ou da música..." />
       <button>Buscar</button>
+    </form> -->
+    <form id="form">
+      <div class="buscar-caixa">
+        <input id="search" type="text" name="" class="buscar-txt" placeholder="Insira nome da música ou artista" />
+        <button class="buscar-btn">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
     </form>
   </header>
+
 
   <ul id="songs-container" class="songs-container songs"></ul>
 
@@ -26,4 +35,5 @@
 
   <script src="./app.js"></script>
 </body>
+
 </html>
